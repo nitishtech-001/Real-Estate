@@ -1,9 +1,9 @@
 import About from "./pages/about";
-import Home from "./pages/home";
+import Home from "./pages/Home";
 import Profile from "./pages/profile";
 import Signin from "./pages/signin";
 import Signup from "./pages/signup";
-import Header from "./components/header";
+import Header from "./components/Header";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
