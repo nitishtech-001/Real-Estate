@@ -2,7 +2,7 @@ import About from "./pages/About";
 import Home from "./pages/Home";
 import Profile from "./pages/profile";
 import Signin from "./pages/signin";
-import Signup from "./pages/signup";
+import Signup from "./pages/Signup";
 import Header from "./components/Header";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -13,8 +13,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/about" element={<About/>} />
-        <Route path="/sign-in" element={<Signin/>} />
-        <Route path="/sign-up" element={<Signup/>} />
+        <Route path="/signin" element={<Signin/>} />
+        <Route path="/signup" element={<Signup/>} />
         <Route path="/profile" element={<Profile/>} />
       </Routes>
     </BrowserRouter>
