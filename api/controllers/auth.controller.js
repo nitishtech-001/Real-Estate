@@ -57,11 +57,11 @@ export const google = async (req, res, next) => {
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
       const hashPassword = bcryptjs.hashSync(generateRandomPassword, 14);
-      const username = "nitsk@87jjkhk5676";
       const user = new User({
-        username: username,
+        username: req.body.name.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-4),
         email: req.body.email,
         password: hashPassword,
+        avatar: req.body.photo,
       });
       await user.save();
       const { password: pass, ...rest } = user._doc;

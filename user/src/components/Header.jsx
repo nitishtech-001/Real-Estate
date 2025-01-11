@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ImSearch } from "react-icons/im";
+import {useSelector} from 'react-redux';
 export default function Header() {
+  const {currentUser} = useSelector(state => state.user);
   return (
     <header className="block bg-slate-300 sm:bg-slate-200 ">
       <div className=" flex  justify-around items-center p-3 gap-4 sm:max-w-7xl sm:justify-between sm:gap-18 md:max-w-9xl">
@@ -17,7 +19,7 @@ export default function Header() {
           />
           <ImSearch className="text-slate-500 size-4 sm:size-5" />
         </form>
-        <ul className="flex xs:gap-5 sm:gap-4  md:gap-6 lg:gap-8 xl:gap-10">
+        <ul className="flex items-center xs:gap-5 sm:gap-4  md:gap-6 lg:gap-8 xl:gap-10">
           <Link to="/">
             <li className="font-bold hidden text-slate-700 sm:inline hover:underline pointer hover:text-red-900">
               Home
@@ -28,10 +30,14 @@ export default function Header() {
               About
             </li>
           </Link>
-          <Link to="/signin">
-            <li className="font-bold text-nowrap text-slate-700 hover:underline pointer  hover:text-red-900">
+          <Link to="/profile">
+          {currentUser ?(
+            <img src={currentUser.rest.avatar || currentUser.avatar} alt="user photo"  className="rounded-full h-10 w-10 object-cover" title="user photo"/>
+          ):
+            (<li className="font-bold text-nowrap text-slate-700 hover:underline pointer  hover:text-red-900">
               Sign in
-            </li>
+            </li>)
+          }
           </Link>
         </ul>
       </div>
