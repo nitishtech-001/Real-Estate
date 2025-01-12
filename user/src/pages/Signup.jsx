@@ -47,7 +47,7 @@ export default function Signup() {
         <form
           onSubmit={handleSubmit}
           className="flex flex-col min-w-32 mx-5  gap-4 opacity-75 font-semibold xs:max-w-xs sm:max-w-screen-sm xs:mx-20"
-        >
+        > 
           <input
             type="text"
             id="username"
