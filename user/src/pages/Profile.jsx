@@ -4,7 +4,7 @@ export default function Profile() {
   const { currentUser } = useSelector((state) => state.user);
   return (
     <div className="flex flex-col p-3  mx-auto min-w-xl max-w-lg xs:max-w-xs sm:max-w-xl ">
-      <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
+      <h1 className="text-3xl font-bold text-center my-7 ">Profile</h1>
       <form 
         className="flex flex-col gap-3 w-full min-w-32 font-semibold"
         >
