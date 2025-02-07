@@ -64,12 +64,12 @@ export const google = async (req, res, next) => {
         avatar: req.body.photo,
       });
       await user.save();
-      const { password: pass, ...rest } = user._doc;
+      const { password, ...rest } = user._doc;
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       res
         .cookie("access_token", token, { httpOnly: true })
         .status(200)
-        .json({ rest });
+        .json(rest);
     }
   } catch (err) {
     next(err);

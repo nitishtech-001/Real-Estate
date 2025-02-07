@@ -5,20 +5,23 @@ import {
   updateStart,
   updateSuccess,
   updateFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure,
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 
 export default function Profile() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, error} = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
   const fileRef = useRef(null);
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
-  // console.log(currentUser.avatar);
+  const [updateMsg,setUpdateMsg] = useState("");
+  console.log(currentUser.avatar)
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -34,10 +37,10 @@ export default function Profile() {
       const data = await res.json();
       if (data.success === false) {
         dispatch(updateFailure(data.message));
-      } else {
-        console.log(data);
+        return ;
       }
       dispatch(updateSuccess(data));
+      setUpdateMsg("Your credential change successfully!");
     } catch (err) {
       dispatch(updateFailure(err.message));
     }
@@ -71,6 +74,27 @@ export default function Profile() {
       console.log("Upload Error: ", error.response?.data || error.message);
     }
   };
+  const handleDeleteUser = async ()=>{
+    try{
+      dispatch(deleteUserStart());
+      const res = await fetch(`api/user/delete/${currentUser._id}`,{
+        method : "DELETE",
+        headers : {
+          "Content-type" : "application/json",
+        }
+      });
+      const data = await res.json();
+      if(data.success === false){
+        dispatch(deleteUserFailure(data));
+        return ;
+      }
+      dispatch(deleteUserSuccess(data));
+      setUpdateMsg(data)
+    }catch(error){
+      console.log("error")
+      dispatch(deleteUserFailure(error.message));
+    }
+  }
   return (
     <div className="flex flex-col p-3  mx-auto min-w-xl max-w-lg xs:max-w-xs sm:max-w-xl ">
       <h1 className="text-3xl font-bold text-center my-7 ">Profile</h1>
@@ -91,6 +115,7 @@ export default function Profile() {
           alt="user photo"
           title="profile photo"
           className="w-24 h-24 rounded-full self-center object-cover mt-2 sm:w-24 sm:h-24 cursor-pointer"
+          crossOrigin="anonymous"
         />
         <input
           type="text"
@@ -121,9 +146,11 @@ export default function Profile() {
         </button>
       </form>
       <div className="flex justify-between w-full text-red-700 mt-5">
-        <span className="cursor-pointer">Delete Account</span>
+        <span onClick={handleDeleteUser} className="cursor-pointer">Delete Account</span>
         <span className="cursor-pointer">Sign out</span>
       </div>
+      <p className="text-red-700 mt-5">{error ? error : ""}</p>
+      <p className="text-green-700 mt-5">{updateMsg? updateMsg : ""}</p>
     </div>
   );
 }
