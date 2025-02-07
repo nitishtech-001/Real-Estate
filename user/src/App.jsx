@@ -1,6 +1,6 @@
 import About from "./pages/About";
 import Home from "./pages/Home";
-import Profile from "./pages/profile";
+import Profile from "./pages/Profile";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Header from "./components/Header";
