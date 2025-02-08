@@ -18,7 +18,6 @@ export default function Profile() {
   const [formData, setFormData] = useState({});
   const dispatch = useDispatch();
   const [updateMsg,setUpdateMsg] = useState("");
-  console.log(currentUser.avatar)
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -95,6 +94,19 @@ export default function Profile() {
       dispatch(deleteUserFailure(error.message));
     }
   }
+  const handleSignOut =async ()=>{
+    try{
+      const res = await fetch("/api/user/signOut");
+      const data = await res.json();
+      if(data.success === false){
+        dispatch(deleteUserFailure(data.message));
+        return  ;
+      }
+      dispatch(deleteUserSuccess(data))
+    }catch(error){
+      dispatch(deleteUserFailure(error));
+    }
+  }
   return (
     <div className="flex flex-col p-3  mx-auto min-w-xl max-w-lg xs:max-w-xs sm:max-w-xl ">
       <h1 className="text-3xl font-bold text-center my-7 ">Profile</h1>
@@ -147,7 +159,7 @@ export default function Profile() {
       </form>
       <div className="flex justify-between w-full text-red-700 mt-5">
         <span onClick={handleDeleteUser} className="cursor-pointer">Delete Account</span>
-        <span className="cursor-pointer">Sign out</span>
+        <span onClick={handleSignOut} className="cursor-pointer">Sign out</span>
       </div>
       <p className="text-red-700 mt-5">{error ? error : ""}</p>
       <p className="text-green-700 mt-5">{updateMsg? updateMsg : ""}</p>
