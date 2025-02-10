@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import {
   updateStart,
@@ -156,6 +157,9 @@ export default function Profile() {
         <button className="bg-slate-700 text-white  font-bold uppercase hover:opacity-80 disabled:opacity-70 p-2 rounded-md sm:p-3 sm:rounded-lg">
           Update
         </button>
+        <Link to="/create-listening" className="bg-green-700 text-white  text-center font-bold uppercase hover:opacity-80 disabled:opacity-70 p-2 rounded-md sm:p-3 sm:rounded-lg">
+        Create Listening
+        </Link>
       </form>
       <div className="flex justify-between w-full text-red-700 mt-5">
         <span onClick={handleDeleteUser} className="cursor-pointer">Delete Account</span>
