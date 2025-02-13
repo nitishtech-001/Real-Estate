@@ -57,7 +57,7 @@ export default function Profile() {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("fileName", file.name);
-      formData.append("publicKey", "public_uePe6aseysV1evspiEd9STbTQU0=");
+      formData.append("publicKey", import.meta.env.VITE_IMAGEKITIO_PUBLIC_KEY);
       formData.append("signature",signature);
       formData.append("expire",expire);
       formData.append("token",token);
