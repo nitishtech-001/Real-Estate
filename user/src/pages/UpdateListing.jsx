@@ -1,14 +1,14 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-export default function Listing() {
+import { useNavigate, useParams } from "react-router-dom";
+export default function UpdateListing() {
   const navigate = useNavigate();
+  const params = useParams();
   const { currentUser } = useSelector((state) => state.user);
-  const [imageUploadError, setImageUploadError] = useState(false);
+  const [imageUpload, setImageUpload] = useState({ error: "", loading: false });
   const [file, setFile] = useState(undefined);
-  const [imageUrls, setImageUrls] = useState([]);
   const [submitStatus, setSubmitStatus] = useState({
     error: "",
     loading: false,
@@ -29,6 +29,24 @@ export default function Listing() {
     furnished: false,
     userRef: currentUser._id,
   });
+  useEffect(() => {
+    const fetchListing = async () => {
+      try {
+        const res = await fetch(
+          `/api/listening/getListening/${params.listingId}`
+        );
+        const data = await res.json();
+        if (data.success === false) {
+          console.log("something Wrong ", data.message);
+          return;
+        }
+        setFormData(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchListing();
+  }, []);
   const handleChange = (e) => {
     if (e.target.id === "sale" || e.target.id === "rent") {
       setFormData({ ...formData, type: e.target.id });
@@ -51,7 +69,7 @@ export default function Listing() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitStatus({ loading: true, success: false, error: "" });
-    if (imageUrls.length < 1) {
+    if (formData.imageUrls.length < 1) {
       setSubmitStatus({
         loading: false,
         success: false,
@@ -68,7 +86,7 @@ export default function Listing() {
       return;
     }
     try {
-      const res = await fetch("/api/listening/create", {
+      const res = await fetch(`/api/listening/update/${params.listingId}`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -84,24 +102,28 @@ export default function Listing() {
         });
         return;
       }
+      console.log(data);
       setSubmitStatus({ loading: false, success: true, error: "" });
-      navigate(`/listening/${data.listening._id}`);
+      navigate(`/listening/${data._id}`);
     } catch (err) {
       setSubmitStatus({ loading: false, success: fasle, error: err.message });
     }
   };
   const handleImageSubmit = async () => {
     if (file === undefined || file.length === 0) {
-      setImageUploadError("Plaese select the image First.");
+      setImageUpload({
+        error: "Plaese select the image First.",
+        loading: false,
+      });
       return;
     }
     try {
-      setImageUploadError(true);
-      if (file.length > 6 || file.length + imageUrls.length > 6) {
-        setImageUploadError("File allowed  Max  : 7 file");
+      setImageUpload({error: "",loading: true});
+      if (file.length > 6 || file.length + formData.imageUrls.length > 6) {
+        setImageUpload({error : "File allowed  Max  : 7 file",loading : false});
         return;
       }
-      let updateImageUrl = [...imageUrls];
+      let updateImageUrl = [...formData.imageUrls];
       for (let f of file) {
         const authResponse = await axios.get("/api/user/imagekit");
         const { signature, expire, token, fetchURL } = authResponse.data;
@@ -123,31 +145,23 @@ export default function Listing() {
         });
         updateImageUrl.push(uploadResponse.data.url);
       }
-      setImageUrls(updateImageUrl);
       setFormData({ ...formData, imageUrls: updateImageUrl });
-      setImageUploadError(false);
+      setImageUpload({error : "",loading : false});
       setFile(null);
     } catch (error) {
-      setImageUploadError("Max image size 2MB");
+      setImageUpload("Max image size 2MB");
       console.log("Upload Error: ", error.response?.data || error.message);
     }
   };
   const handleDeleteImg = (index) => {
-    const updateImageUrl = [];
-    for (let i = 0; i < imageUrls.length; i++) {
-      if (i === index) {
-        continue;
-      } else {
-        updateImageUrl.push(imageUrls[i]);
-      }
-    }
-    setImageUrls(updateImageUrl);
-    setFormData({ ...formData, imageUrls: updateImageUrl });
+    formData.imageUrls.splice(index, 1);
+    console.log(formData.imageUrls);
+    setFormData({ ...formData });
   };
   return (
     <main className="p-3 max-w-4xl mx-auto overflow-visible">
       <h1 className="text-3xl font-semibold text-center my-8 ">
-        Create a Listing
+        Update a Listing
       </h1>
       <form
         onSubmit={handleSubmit}
@@ -300,14 +314,14 @@ export default function Listing() {
               onClick={handleImageSubmit}
               className="border font-semibold uppercase rounded-lg p-2 bg-slate-300 text-green-600 hover:shadow-lg hover:opacity-90 disabled:opacity-80 "
             >
-              {imageUploadError === true ? "Uploading..." : "Upload"}
+              {imageUpload.loading? "Uploading..." : "Upload"}
             </button>
           </div>
           <p className="text-red-700 -mt-2">
-            {imageUploadError ? imageUploadError : ""}
+            {imageUpload.error ? imageUpload.error : ""}
           </p>
           <div className="">
-            {imageUrls.map((items, index) => (
+            {formData.imageUrls.map((items, index) => (
               <fieldset
                 key={index}
                 className=" flex justify-between p-3 gap-32 items-center border rounded-md w-96"
@@ -331,13 +345,13 @@ export default function Listing() {
             type="submit"
             className="border font-semibold min-w-full uppercase rounded-lg p-2 bg-green-600 hover:shadow-lg hover:opacity-90 disabled:opacity-80 "
           >
-            {submitStatus.loading ? "Listening....." : "create listing"}
+            {submitStatus.loading ? "Listening....." : "Update listing"}
           </button>
           <p className="text-red-700">
             {submitStatus.error ? submitStatus.error : ""}
           </p>
           <p className="text-green-700">
-            {submitStatus.success ? "Listining created successfully!" : ""}
+            {submitStatus.loading ? "Listining created successfully!" : ""}
           </p>
         </div>
       </form>

@@ -34,6 +34,7 @@ export const signin = async (req, res, next) => {
     if (!validPassword) return next(errorHandler(401, "Wrong credentials"));
     const { password: pass, ...rest } = validUser._doc;
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
+    res.clearCookie();
     res
       .cookie("access_token", token, { httpOnly: true })
       .status(200)
@@ -48,6 +49,7 @@ export const google = async (req, res, next) => {
     if (user) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       const { password, ...rest } = user._doc;
+      res.clearCookie();
       res
         .cookie("access_token", token, { httpsOnly: true })
         .status(200)
@@ -57,6 +59,7 @@ export const google = async (req, res, next) => {
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
       const hashPassword = bcryptjs.hashSync(generateRandomPassword, 14);
+      //uploading the image taken from the google to IMAGEKITIO
       const user = new User({
         username: req.body.name.split(" ").join("").toLowerCase() + Math.random().toString(36).slice(-4),
         email: req.body.email,
@@ -66,6 +69,7 @@ export const google = async (req, res, next) => {
       await user.save();
       const { password, ...rest } = user._doc;
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      res.clearCookie();
       res
         .cookie("access_token", token, { httpOnly: true })
         .status(200)

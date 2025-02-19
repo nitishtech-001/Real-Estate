@@ -5,6 +5,7 @@ import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Header from "./components/Header";
 import Listening from "./pages/Listening";
+import UpdateListing from "./pages/UpdateListing";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -20,6 +21,7 @@ function App() {
         <Route element={<PrivateRoute/>} >
         <Route path="/create-listening" element={<Listening/>} />
           <Route path="/profile" element={<Profile/>} />
+        <Route path="/update-listing/:listingId" element={<UpdateListing/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
