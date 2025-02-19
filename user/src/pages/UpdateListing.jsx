@@ -104,7 +104,7 @@ export default function UpdateListing() {
       }
       console.log(data);
       setSubmitStatus({ loading: false, success: true, error: "" });
-      navigate(`/listening/${data._id}`);
+      navigate(`/listing/${data._id}`);
     } catch (err) {
       setSubmitStatus({ loading: false, success: fasle, error: err.message });
     }
@@ -120,7 +120,7 @@ export default function UpdateListing() {
     try {
       setImageUpload({error: "",loading: true});
       if (file.length > 6 || file.length + formData.imageUrls.length > 6) {
-        setImageUpload({error : "File allowed  Max  : 7 file",loading : false});
+        setImageUpload({error : "File allowed  Max  : 6 file",loading : false});
         return;
       }
       let updateImageUrl = [...formData.imageUrls];

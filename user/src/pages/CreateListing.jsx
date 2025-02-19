@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-export default function Listing() {
+export default function CreateListing() {
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
   const [imageUploadError, setImageUploadError] = useState(false);
@@ -85,7 +85,7 @@ export default function Listing() {
         return;
       }
       setSubmitStatus({ loading: false, success: true, error: "" });
-      navigate(`/listening/${data.listening._id}`);
+      navigate(`/listing/${data.listening._id}`);
     } catch (err) {
       setSubmitStatus({ loading: false, success: fasle, error: err.message });
     }
