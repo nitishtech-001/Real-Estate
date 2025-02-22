@@ -275,7 +275,7 @@ export default function Profile() {
           {listing.imageUrls.map((url, index) => (
             <div
               key={index}
-              className="flex justify-between items-center border mt-5 p-2"
+              className="flex justify-between items-center border mt-5 p-2 gap-2"
             >
               <Link to={`/listing/${listing._id}`}>
                 <img
@@ -286,7 +286,7 @@ export default function Profile() {
                 />
               </Link>
               <Link to={`/listing/${listing._id}`}>
-                <p className="hover:underline truncate">{listing.name}</p>
+                <p className="hover:underline truncate w-[100px] sm:w-[200px]" >{listing.name}</p>
               </Link>
               <div className="flex flex-col gap-2 w-24">
                 <button

@@ -89,7 +89,7 @@ export const getListening = async (req, res, next) => {
 }
 export const getListenings = async (req, res, next) => {
     try {
-        const limit = parseInt(req.query.limit) || 9;
+        const limit = parseInt(req.query.limit);
         const startIndex = parseInt(req.query.startIndex) || 0;
 
         let offer = req.query.offer;
@@ -117,18 +117,31 @@ export const getListenings = async (req, res, next) => {
         const sort = req.query.sort || 'createdAt';
 
         const order = req.query.order || 'desc';
-
-        const listenings = await Listening.find({
-            name: { $regex: searchTerm, $options: 'i' },
-            offer,
-            parking,
-            furnished,
-            type
-        })
-            .sort({ [sort]: order })
-            .limit(limit)
-            .skip(startIndex)
-            .exec();
+        let listenings ;
+        if(limit){
+            listenings = await Listening.find({
+                name: { $regex: searchTerm, $options: 'i' },
+                offer,
+                parking,
+                furnished,
+                type
+            })
+                .sort({ [sort]: order })
+                .limit(limit)
+                .skip(startIndex)
+                .exec();
+        }else{
+            listenings = await Listening.find({
+                name: { $regex: searchTerm, $options: 'i' },
+                offer,
+                parking,
+                furnished,
+                type
+            })
+                .sort({ [sort]: order })
+                .skip(startIndex)
+                .exec();
+        }
         res.status(200).json(listenings);
 
     } catch (error) {
