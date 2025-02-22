@@ -79,14 +79,14 @@ export default function Listing() {
               {listing.discountPrice ? (
                 <>
                   <span className="text-blue-600 line-through">
-                    ${listing.regularPrice}/month
+                    ${listing.regularPrice.toLocaleString('en-US')}/month
                   </span>
                   <span className="text-blue-600 ml-5">
-                    ${listing.discountPrice}/month
+                    ${listing.discountPrice.toLocaleString('en-US')}/month
                   </span>
                 </>
               ) : (
-                <span className="text-blue-600">${listing.regularPrice}</span>
+                <span className="text-blue-600">${listing.regularPrice.toLocaleString('en-US')}</span>
               )}
             </h1>
             <p className="flex gap-2 text-lg items-center sm:text-xl my-2">
@@ -105,7 +105,7 @@ export default function Listing() {
               )}
               {listing.offer ? (
                 <span className="rounded-md p-1 w-full bg-blue-600 ml-5">
-                  Save: {+listing.regularPrice - +listing.discountPrice}
+                  Save: {(+listing.regularPrice - +listing.discountPrice).toLocaleString('en-US')}
                 </span>
               ) : (
                 ""

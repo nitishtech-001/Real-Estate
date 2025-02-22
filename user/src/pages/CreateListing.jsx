@@ -171,7 +171,7 @@ export default function CreateListing() {
               placeholder="Description"
               className="border-gray-300 p-2 rounded-lg h-14 w-full"
               minLength="10"
-              maxLength="60"
+              maxLength="160"
               required
               onChange={handleChange}
               value={formData.description}

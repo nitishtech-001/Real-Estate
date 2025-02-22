@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import ListingItem from '../components/ListingItem';
 
 export default function Search() {
   const navigate = useNavigate();
@@ -38,26 +39,27 @@ export default function Search() {
     urlParams.set("sort",query.sort);
     urlParams.set("order",query.order);
     const searchQuery = urlParams.toString();
+    console.log(searchQuery)
     navigate(`/search?${searchQuery}`);
   }
   useEffect(()=>{
     const urlParams = new URLSearchParams(window.location.search);
-    const searchTerm = urlParams.get("searchTerm");
-    const type = urlParams.get("type").toString();
+    const searchTerm = urlParams.get("searchTerm").toString() || "";
+    const type = urlParams.get("type").toString() || "all";
     const offer = urlParams.get("offer")=== "true"?true:false;
     const parking = urlParams.get("parking")=== "true"?true:false;
     const furnished = urlParams.get("furnished")=== "true"?true:false;
-    const sort = urlParams.get("sort").toString();
-    const order = urlParams.get("order").toString();
+    const sort = urlParams.get("sort").toString() || "createdAt";
+    const order = urlParams.get("order").toString() || "desc";
     if(searchTerm || type || offer || parking || furnished || sort || order){
       setquery({
-        searchTerm: searchTerm || "",
-        type: type || "all",
+        searchTerm: searchTerm ,
+        type: type ,
         parking: parking ,
         offer:offer ,
         furnished: furnished ,
-        sort: sort || "createdAt",
-        order: order || "desc"
+        sort: sort ,
+        order: order 
       });
     }
     const fetchListing = async ()=>{
@@ -80,7 +82,7 @@ export default function Search() {
   },[window.location.search])
   return (
     <div className='flex flex-col md:flex-row gap-5'>
-      <div className='border-b-4 min-w-[400px]  md:border-r-4 md:border-b-0 md:w-1/3 md:min-h-screen' >
+      <div className='border-b-4 md:min-w-[380px]  md:border-r-4 md:border-b-0 md:w-1/3 md:min-h-screen' >
        <form onSubmit={handleSubmit} className='flex flex-col m-5 gap-5 mb-5'>
         <fieldset className='flex gap-5 items-center'>
           <label htmlFor="search" className='text-nowrap font-semibold'>Search Term: </label>
@@ -128,9 +130,20 @@ export default function Search() {
         <button className='bg-slate-700 p-2 text-center rounded-md text-white uppercase hover:opacity-85'>Search</button>
        </form>
       </div>
-      <div className='md:mt-5'>
-        <h1 className='text-3xl text-slate-700 font-semibold border-4 p-1'>Listing results:</h1>
+      <div className='mx-5 md:mt-5'>
+        <h1 className='text-2xl md:text-3xl text-slate-700 font-semibold border-4 p-1'>Listing results:</h1>
+        <div className='font-semibold text-2xl text-red-700'>
+        {listStatus.loading && <h1 className='text-center'>Loading...</h1>}
+        {listStatus.error && <h1 className='text-center'>{listStatus.error}</h1>}
+        {listings.length === 0 && <h1 className='text-center'>No listing found</h1>}
+        </div>
+        <div className='flex flex-wrap gap-5 mt-5'>
+        {!listStatus.loading && !listStatus.error &&  listings.map(listing=>
+            <ListingItem key={listing._id} listing={listing} />
+        )}
+        </div>
       </div>
     </div>
   )
 }
+

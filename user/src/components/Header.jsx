@@ -9,7 +9,12 @@ export default function Header() {
   const handleSubmit = (e)=>{
     e.preventDefault();
     const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set("searchTerm",searchTerm);
+    urlParams.set("searchTerm",searchTerm || "");
+    urlParams.set("type","all");
+    urlParams.set("parking",false);
+    urlParams.set("furnished",false);
+    urlParams.set("sort","createdAt");
+    urlParams.set("order","desc");
     const searchQuery = urlParams.toString();
     navigate("/search?"+searchQuery);
   }
