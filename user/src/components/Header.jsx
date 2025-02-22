@@ -31,7 +31,7 @@ export default function Header() {
             onChange={(e)=>setSearchTerm(e.target.value)}
             type="text"
             placeholder="Search ..."
-            className="bg-transparent   min-w-4 outline-none capitalize "
+            className="bg-transparent  min-w-4 outline-none capitalize xs:w-11/12"
           />
           <button>
           <ImSearch className="text-slate-500 size-4 sm:size-5" />
