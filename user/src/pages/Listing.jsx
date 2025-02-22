@@ -5,7 +5,7 @@ import SwiperCore from "swiper";
 import { Navigation } from "swiper/modules";
 import { useSelector } from "react-redux";
 import "swiper/css/bundle";
-import { FaBed, FaBath, FaShare, FaParking, FaChair,FaMapMarkedAlt } from "react-icons/fa";
+import { FaBed, FaBath, FaShare, FaParking, FaChair } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import Contact from "../components/Contact.jsx";
@@ -90,7 +90,6 @@ export default function Listing() {
               )}
             </h1>
             <p className="flex gap-2 text-lg items-center sm:text-xl my-2">
-              <FaMapMarkedAlt className="text-xl text-blue-500" />
               <FontAwesomeIcon icon={faLocationDot} />
               {listing.address}
             </p>

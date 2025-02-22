@@ -63,6 +63,8 @@ export const deleteUser = async (req, res, next) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.clearCookie('access_token');
+    // when the user is deleted then its all listings should be deleted
+    await Listening.deleteMany({ userRef: req.params.id });
     res.status(200).json('User has been deleted successfully!');
   } catch (error) {
     next(error)

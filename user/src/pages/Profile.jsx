@@ -225,7 +225,7 @@ export default function Profile() {
           Update
         </button>
         <Link
-          to="/create-listening"
+          to="/create-listing"
           className="bg-green-700 text-white  text-center font-bold uppercase hover:opacity-80 disabled:opacity-70 p-2 rounded-md sm:p-3 sm:rounded-lg"
         >
           Create Listening
