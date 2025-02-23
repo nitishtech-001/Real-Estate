@@ -14,7 +14,7 @@ export default {
         'xl': '1280px',
       },
       backgroundImage: { 
-        'bgSignup': "url('./bgSign.png')",
+        'bgSignup': "url('/bgSign.png')",
       },
     },
   },
