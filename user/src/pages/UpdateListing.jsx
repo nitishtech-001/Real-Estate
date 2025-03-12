@@ -155,7 +155,6 @@ export default function UpdateListing() {
   };
   const handleDeleteImg = (index) => {
     formData.imageUrls.splice(index, 1);
-    console.log(formData.imageUrls);
     setFormData({ ...formData });
   };
   return (
@@ -307,7 +306,7 @@ export default function UpdateListing() {
               className="border-gray-300 rounded-lg p-1 file:cursor-pointer border"
               accept="image/*"
               multiple
-              required
+              required ={formData.imageUrls<0}
             />
             <button
               type="button"

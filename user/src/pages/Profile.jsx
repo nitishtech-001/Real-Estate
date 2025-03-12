@@ -149,6 +149,7 @@ export default function Profile() {
       console.log(error);
     }
   };
+/*     I REMOVE THE DELETE THE IMAGE FROM THE PROFILE IT CAN BE DELETED FROM EDIT SECTION AS WELL
   const handleDeleteImageUrlListing = async (listingId, deleteIndex,objIndex) => {
     try {
       setImageChange(false);
@@ -174,7 +175,7 @@ export default function Profile() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }; */
   return (
     <div className="flex flex-col p-3  mx-auto min-w-xl max-w-lg xs:max-w-xs sm:max-w-xl ">
       <h1 className="text-3xl font-bold text-center my-7 ">Profile</h1>
@@ -247,11 +248,13 @@ export default function Profile() {
       >
         {showListing.loading ? "Just A Minute....." : "Show Listings"}
       </button>
-      { imageChange && userListing.map((listing,objIndex) => (
-        <div key={listing._id} className="">
+      {imageChange && userListing.length > 0 &&
           <h1 className="text-center text-2xl my-5 font-semibold">
             Your Listings
           </h1>
+      }
+      { imageChange && userListing.map((listing,objIndex) => (
+        <div key={listing._id} className="">
           <div className="flex justify-evenly my-5 items-center">
             <p>
               Create Date :{" "}
@@ -259,12 +262,11 @@ export default function Profile() {
                 {listing.createdAt.slice(0, 10)}
               </span>
             </p>
-            <button
-              onClick={() => handleDeleteListing(listing._id)}
-              className="bg-red-700 text-white md:h-8 rounded-md px-1 hover:opacity-70 uppercase text-wrap mx-5"
+            <div
+              className="bg-slate-500 flex justify-center items-center text-white md:h-8 rounded-md px-1 uppercase text-wrap mx-5"
             >
-              Delete Listing
-            </button>
+             {objIndex+1} Listing
+            </div>
             <p>
               Update At :{" "}
               <span className="text-nowrap">
@@ -272,16 +274,13 @@ export default function Profile() {
               </span>
             </p>
           </div>
-          {listing.imageUrls.map((url, index) => (
             <div
-              key={index}
               className="flex justify-between items-center border mt-5 p-2 gap-2"
             >
               <Link to={`/listing/${listing._id}`}>
                 <img
-                  src={url}
+                  src={listing.imageUrls[0]}
                   alt={listing.description}
-                  key={index}
                   className="h-20 w-32 object-contain"
                 />
               </Link>
@@ -290,9 +289,7 @@ export default function Profile() {
               </Link>
               <div className="flex flex-col gap-2 w-24">
                 <button
-                  onClick={() =>
-                    handleDeleteImageUrlListing(listing._id, index,objIndex)
-                  }
+                  onClick={() => handleDeleteListing(listing._id)}
                   className="bg-red-700 text-white h-8 rounded-md px-1 hover:opacity-70 uppercase"
                 >
                   Delete
@@ -304,7 +301,6 @@ export default function Profile() {
                 </Link>
               </div>
             </div>
-          ))}
         </div>
       ))}
     </div>
