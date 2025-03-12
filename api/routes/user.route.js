@@ -10,5 +10,5 @@ router.get("/imagekit",imagekit);
 router.delete("/delete/:id",verifyToken,deleteUser);
 router.get("/signOut",signOut);
 router.get("/listening/:id",verifyToken,userListenings);
-router.get("/getUser/:id",verifyToken,getUser);
+router.get("/getUser/:id",getUser);
 export default router;

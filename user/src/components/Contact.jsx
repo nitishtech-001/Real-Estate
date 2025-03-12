@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 export default function Contact({ listing }) {
   const [landlord, setLandlord] = useState({});
   const [message, setMessage] = useState("");
-  console.log(message);
   const handleChange = (e) => {
     setMessage({ message: e.target.value });
   };
@@ -19,7 +18,7 @@ export default function Contact({ listing }) {
         }
         setLandlord(data);
       } catch (error) {
-        console.loglog(error.message);
+        console.log(error.message);
       }
     };
     fetchUser();
