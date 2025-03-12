@@ -151,7 +151,7 @@ export default function Listing() {
                 {listing.parking ? "Furnished" : "No-Furnished"}
               </span>
             </p>
-            {currentUser._id !== listing.userRef && !contact ? (
+            {!currentUser || (currentUser._id !== listing.userRef && !contact) ? (
               <button
                 className="bg-slate-700 w-full p-2 text-white uppercase rounded-md hover:opacity-85"
                 onClick={() => setContact(true)}
